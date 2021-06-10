@@ -1,0 +1,40 @@
+estimator:
+  - name: age-extractor
+    params: {}
+  - name: categorical-encoder
+    params:
+      one_hot: false
+      force_dense_array: true
+      pass_through_columns:
+        - HouseAge
+        - RemodAddAge
+        - GarageAge
+#  - name: standard-scaler
+#    params: {}
+  - name: decision-treee-regresor
+    params: 
+      max_depth:  3000
+      max_features: 1
+
+data:
+  filepath: ./dataset.csv
+
+metrics:
+  - name: mean absolute error
+    params: {}
+
+search:
+  jobs: -1
+  grid:
+    - name: decision-treee-regresor
+      params:
+        max_depth: [100,500,1000]
+        max_features: [1,10,50,100,200,500]
+        min_samples_leaf: [1,2,3,4,5]
+        min_samples_split: [1,2,5,10,20,100]
+
+export:
+  output_dir: ./models
+
+reports:
+  dir: ./reports
