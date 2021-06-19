@@ -9,7 +9,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator, RegressorMixin, TransformerMixin
 from sklearn.preprocessing import PolynomialFeatures, KBinsDiscretizer
 from sklearn.compose import ColumnTransformer
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor,RandomForestClassifier,AdaBoostClassifier
 from sklearn.linear_model import LinearRegression,SGDClassifier,RidgeClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
@@ -38,14 +38,17 @@ def get_estimator_mapping():
         "random-forest-regressor": RandomForestRegressor,
         "linear-regressor": LinearRegression,
         "average-price-per-neighborhood-regressor": AveragePricePerNeighborhoodRegressor,
-        "age-extractor": AgeExtractor,
         "categorical-encoder": CategoricalEncoder,
         "standard-scaler": StandardScaler,
         "discretizer": _get_discretizer,
         "crosser": _get_crosser,
+        "PolynomialFeatures": PolynomialFeatures,
         "averager": AveragePricePerNeighborhoodExtractor,
         "decision-treee-regresor" : DecisionTreeRegressor,
-        "lineal-clasificadpor" : RidgeClassifier,##SGDClassifier,
+        "lineal-classifier" : RidgeClassifier,
+        "SGDClassifier" : SGDClassifier,
+        "Random-forest-classifier": RandomForestClassifier,
+        "AdaBoostClassifier": AdaBoostClassifier
     }
 
 
@@ -81,15 +84,14 @@ def _get_crosser(
     return transformer
 
 
-class AgeExtractor(BaseEstimator, TransformerMixin):
+class CreateNewColumns(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
 
     def transform(self, X):
         X = X.copy()
-        X["HouseAge"] = X["YrSold"] - X["YearBuilt"]
-        X["RemodAddAge"] = X["YrSold"] - X["YearRemodAdd"]
-        X["GarageAge"] = X["YrSold"] - X["GarageYrBlt"]
+        X["agebin"] = pd.cut(X['age'].astype(int), bins=[0,20,45,100], labels=["Low", "Mid", "High"])
+        X["cholesterollog"] = (X['chol'].astype(int)+1).transform(np.log)
         return X
 
 

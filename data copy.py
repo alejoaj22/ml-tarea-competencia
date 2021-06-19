@@ -33,14 +33,8 @@ def get_dataset(reader: DatasetReader, splits: t.Iterable[SplitName]):
 def clean_dataset(df: pd.DataFrame) -> pd.DataFrame:
     cleaning_fn = _chain(
         [
-            
-            _columnas_a_numericas,
-            _columnas_a_string,
             _fix_unhandled_nulls,
-            reemplazar_vacios,
-            _add_agecategorical,
-            _add_chol_log
-            
+            reemplazar_vacios
 
 
         ]
@@ -63,28 +57,11 @@ def reemplazar_vacios(df):
     return df
 
 def _columnas_a_numericas(df):
-    df[["age","oldpeak","thalachh","chol","trtbps"]] = df[["age","oldpeak","thalachh","chol","trtbps"]].astype(int)
-    return df
-
-def agecategorical(age):
-    if age <45:
-        return "0"
-    elif age >=45:
-        return "1"
-
-def _add_agecategorical(df):
-    df['age_range'] = df['age'].apply(agecategorical)
-    return df
-
-def transform_chol(chol):
-    return np.log(chol)
-
-def _add_chol_log(df):
-    df['chollog'] = df['chol'].apply(transform_chol)
+    df[["oldpeak","thalachh","chol","trtbps"]] = df[["oldpeak","thalachh","chol","trtbps"]].astype(int)
     return df
 
 def _columnas_a_string(df):
-    df[["cp","restecg","slp","caa","thall","sex","fbs","exng"]] = df[["cp","restecg","slp","caa","thall","sex","fbs","exng"]].astype(str)
+    df[["age","cp","restecg","slp","caa","thall","sex","fbs","exng"]] = df[["age","cp","restecg","slp","caa","thall","sex","fbs","exng"]].astype(str)
     #df[["age","sex","cp","trtbps","chol","fbs","restecg","thalachh","exng","oldpeak","slp","caa","thall"]] = df[["age","sex","cp","trtbps","chol","fbs","restecg","thalachh","exng","oldpeak","slp","caa","thall"]]
     return df
 
@@ -93,7 +70,7 @@ def _fix_unhandled_nulls(df):
     return df
 
 def get_categorical_column_names() -> t.List[str]:
-    return ("age,cp,restecg,slp,caa,thall").split(",")
+    return ("").split(",")
 
 
 def get_binary_column_names() -> t.List[str]:
@@ -101,7 +78,7 @@ def get_binary_column_names() -> t.List[str]:
 
 
 def get_numeric_column_names() -> t.List[str]:
-    return ("age,oldpeak,thalachh,chol,trtbps").split(",")
+    return ("age,cp,trtbps,chol,restecg,thalachh,oldpeak,slp,caa,thall").split(",")
 
 
 def get_column_names() -> t.List[str]:
@@ -110,7 +87,7 @@ def get_column_names() -> t.List[str]:
 
 def get_categorical_variables_values_mapping() -> t.Dict[str, t.Sequence[str]]:
     return {
-#        "age": ('54', '58', '47', '45', '50', '62', '65', '43',  '39', '63', '44', '68', '67', '55',  '59', '57', '56', '70', '61', '52', '60', '74', '35', '51', '64', '42', '41', '37', '53', '49', '46', '66', '48', '77', '38', '34', '71', '69'),
+        "age": ('54', '58', '47', '45', '50', '62', '65', '43',  '39', '63', '44', '68', '67', '55',  '59', '57', '56', '70', '61', '52', '60', '74', '35', '51', '64', '42', '41', '37', '53', '49', '46', '66', '48', '77', '38', '34', '71', '69'),
         "cp": ('2', '0', '1', '3'),
 #        "trtbps": ('150', '120', '112', '114', '100', '130', '124', '138', '108', '140', '118', '128', '110', '134', '155', '126', '132', '136', '160', '123', '152', '122', '192', '180', '115', '135', '142', '170', '145', '125', '148', '172', '146', '178', '156', '174', '164', '144', '101', '94'),
         "restecg": ('0', '1', '2'),
