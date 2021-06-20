@@ -21,7 +21,6 @@ SplitName = te.Literal["train", "test"]
 def get_dataset(reader: DatasetReader, splits: t.Iterable[SplitName]):
     df = reader()
     df = clean_dataset(df)
-    print(df)
     y = df["y"]
     X = df.drop(columns=["y"])
     X_train, X_test, y_train, y_test = train_test_split(
@@ -75,13 +74,13 @@ def reemplazar_vacios(df):
     return df
 
 def remover_columnas(df):
-    df_aux = df.drop(["trtbps", "chol", "fbs"], axis = 1)
-    return df_aux
+    df = df.drop(["trtbps", "chol", "fbs"], axis = 1)
+    return df
 
 def remover_overlines(df):
     z = np.abs(stats.zscore(df))
-    data3 = df[(z<3).all(axis=1)]
-    return data3
+    df = df[(z<3).all(axis=1)]
+    return df
 
 
 def _columnas_a_numericas(df):
