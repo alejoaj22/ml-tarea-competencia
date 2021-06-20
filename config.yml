@@ -7,7 +7,7 @@ estimator:
 #      force_dense_array: true
   - name: standard-scaler
     params: {}
-  - name: lineal-classifier
+  - name: base-clasificador
     params: {}
 
 

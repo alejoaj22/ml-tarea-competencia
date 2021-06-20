@@ -49,7 +49,8 @@ def get_estimator_mapping():
         "SGDClassifier" : SGDClassifier,
         "Random-forest-classifier": RandomForestClassifier,
         "AdaBoostClassifier": AdaBoostClassifier,
-        "Logis-ticRegression": LogisticRegression
+        "Logis-ticRegression": LogisticRegression,
+        "base-clasificador": modelobasedeclasificacion
     }
 
 
@@ -166,7 +167,7 @@ class AveragePricePerNeighborhoodRegressor(BaseEstimator, RegressorMixin):
 
 
 
-class primedi(BaseEstimator, RegressorMixin):
+class modelobasedeclasificacion(BaseEstimator, RegressorMixin):
     def fit(self, X, y):
         """Computes the mode of the price per neighbor on training data."""
         df = pd.DataFrame({"age": X["age"],
