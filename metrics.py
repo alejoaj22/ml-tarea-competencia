@@ -4,11 +4,11 @@ In this module we store functions to measuer the performance of our model.
 """
 import numpy as np
 from numpy.core.numeric import argwhere
-from sklearn.metrics import mean_absolute_error, make_scorer, f1_score
+from sklearn.metrics import mean_absolute_error, make_scorer, f1_score, precision_score
 
 
 def get_metric_name_mapping():
-    return {_mae(): mean_absolute_error, _cm(): custom_error, _f1_score(): f1_score}
+    return {_mae(): mean_absolute_error, _cm(): custom_error, _f1_score(): f1_score , _precision_score(): precision_score}
 
 
 def custom_error(
@@ -37,7 +37,8 @@ def get_metric_function(name: str, **params):
 def get_scoring_function(name: str, **params):
     mapping = {
         _mae(): make_scorer(mean_absolute_error, greater_is_better=False, **params),
-        _f1_score(): make_scorer(f1_score, greater_is_better=True, **params)
+        _f1_score(): make_scorer(f1_score, greater_is_better=True, **params),
+        _precision_score(): make_scorer(precision_score, greater_is_better=True, **params)
     }
     return mapping[name]
 
@@ -52,3 +53,6 @@ def _cm():
 
 def _f1_score():
     return "f1 score"
+
+def _precision_score():
+    return "precision score"

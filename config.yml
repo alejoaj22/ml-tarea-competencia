@@ -14,24 +14,17 @@ data:
   filepath: ./train_classification.csv
 
 metrics:
-  - name: f1 score
+  - name: precision score
     params: {}
 
 search:
   jobs: -1
-  grid:
-#    - name: Random-forest-classifier
-#       params:
-#         criterion: ["gini", "entropy"]
-#         max_depth: [1,5,10,50,70,100,150]
-#         max_features: [1,10,"auto", "sqrt", "log2"]
-    - name: lineal-classifier
+  grid:   
+    - name: Random-forest-classifier
       params:
-        solver: ["auto", "svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga"]
-        alpha : [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-        normalize : [True, False]
-        tol : [0.1,0.001,0.01]
-        fit_intercept : [True, False]
+        criterion: ["gini", "entropy"]
+        max_depth: [1,5,10,50,70,100,150]
+        max_features: [1,10,"auto", "sqrt", "log2"]
 export:
   output_dir: ./models
 
