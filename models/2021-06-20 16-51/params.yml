@@ -1,0 +1,7 @@
+- name: standard-scaler
+  params: {}
+- name: Random-forest-classifier
+  params:
+    criterion: entropy
+    max_depth: 2
+    max_features: sqrt

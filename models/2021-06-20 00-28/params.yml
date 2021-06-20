@@ -1,0 +1,4 @@
+- name: standard-scaler
+  params: {}
+- name: lineal-classifier
+  params: {}

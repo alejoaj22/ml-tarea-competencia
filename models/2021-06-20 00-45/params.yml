@@ -1,0 +1,7 @@
+- hparams:
+    alpha: 0.4
+    fit_intercept: true
+    normalize: true
+    solver: sag
+    tol: 0.1
+  name: lineal-classifier

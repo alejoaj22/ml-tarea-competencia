@@ -1,0 +1,5 @@
+- hparams:
+    criterion: gini
+    max_depth: 70
+    max_features: 1
+  name: Random-forest-classifier
