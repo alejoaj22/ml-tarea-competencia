@@ -173,7 +173,6 @@ class modelobasedeclasificacion(BaseEstimator, RegressorMixin):
         df = pd.DataFrame({"age": X["age"],"sex" : X["sex"],"cp" : X["cp"],"restecg" : X["restecg"],"thalachh" : X["thalachh"],"oldpeak" : X["oldpeak"],"slp" : X["slp"],"caa" : X["caa"],"thall" : X["thall"], "y": y})
         self.means_ = df.groupby("y").mean().to_dict()
         self.global_mean_ = y.mean()
-
         return self
 
     def predict(self, X):
