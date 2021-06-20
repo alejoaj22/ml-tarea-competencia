@@ -10,7 +10,7 @@ from sklearn.base import BaseEstimator, RegressorMixin, TransformerMixin
 from sklearn.preprocessing import PolynomialFeatures, KBinsDiscretizer
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestRegressor,RandomForestClassifier,AdaBoostClassifier
-from sklearn.linear_model import LinearRegression,SGDClassifier,RidgeClassifier
+from sklearn.linear_model import LinearRegression,SGDClassifier,RidgeClassifier,LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 from sklearn.tree import DecisionTreeRegressor
@@ -48,7 +48,8 @@ def get_estimator_mapping():
         "lineal-classifier" : RidgeClassifier,
         "SGDClassifier" : SGDClassifier,
         "Random-forest-classifier": RandomForestClassifier,
-        "AdaBoostClassifier": AdaBoostClassifier
+        "AdaBoostClassifier": AdaBoostClassifier,
+        "Logis-ticRegression": LogisticRegression
     }
 
 

@@ -8,7 +8,7 @@ import typing_extensions as te
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-
+from scipy import stats
 
 class DatasetReader(te.Protocol):
     def __call__(self) -> pd.DataFrame:
@@ -21,6 +21,7 @@ SplitName = te.Literal["train", "test"]
 def get_dataset(reader: DatasetReader, splits: t.Iterable[SplitName]):
     df = reader()
     df = clean_dataset(df)
+    print(df)
     y = df["y"]
     X = df.drop(columns=["y"])
     X_train, X_test, y_train, y_test = train_test_split(
@@ -30,16 +31,27 @@ def get_dataset(reader: DatasetReader, splits: t.Iterable[SplitName]):
     return {k: split_mapping[k] for k in splits}
 
 
+def get_dataset_mod(reader: DatasetReader, splits: t.Iterable[SplitName]):
+    df = reader()
+    df = clean_dataset(df)
+    y = df["y"]
+    X = df.drop(columns=["y"])
+    split_mapping = {"train": (X, y), "test": (X, y)}
+    return X.copy()
+
+
+
 def clean_dataset(df: pd.DataFrame) -> pd.DataFrame:
     cleaning_fn = _chain(
         [
-            
+            remover_overlines,
             _columnas_a_numericas,
             _columnas_a_string,
             _fix_unhandled_nulls,
             reemplazar_vacios,
             _add_agecategorical,
-            _add_chol_log
+            _add_chol_log,
+            remover_columnas
             
 
 
@@ -62,8 +74,18 @@ def reemplazar_vacios(df):
     df = df.fillna(0)
     return df
 
+def remover_columnas(df):
+    df_aux = df.drop(["trtbps", "chol", "fbs"], axis = 1)
+    return df_aux
+
+def remover_overlines(df):
+    z = np.abs(stats.zscore(df))
+    data3 = df[(z<3).all(axis=1)]
+    return data3
+
+
 def _columnas_a_numericas(df):
-    df[["age","oldpeak","thalachh","chol","trtbps"]] = df[["age","oldpeak","thalachh","chol","trtbps"]].astype(int)
+    df[["age","oldpeak","thalachh"]] = df[["age","oldpeak","thalachh"]].astype(int)
     return df
 
 def agecategorical(age):
@@ -84,7 +106,7 @@ def _add_chol_log(df):
     return df
 
 def _columnas_a_string(df):
-    df[["cp","restecg","slp","caa","thall","sex","fbs","exng"]] = df[["cp","restecg","slp","caa","thall","sex","fbs","exng"]].astype(str)
+    df[["cp","restecg","slp","caa","thall","sex","exng"]] = df[["cp","restecg","slp","caa","thall","sex","exng"]].astype(str)
     #df[["age","sex","cp","trtbps","chol","fbs","restecg","thalachh","exng","oldpeak","slp","caa","thall"]] = df[["age","sex","cp","trtbps","chol","fbs","restecg","thalachh","exng","oldpeak","slp","caa","thall"]]
     return df
 
@@ -97,15 +119,15 @@ def get_categorical_column_names() -> t.List[str]:
 
 
 def get_binary_column_names() -> t.List[str]:
-    return ("sex,fbs,exng").split(",")
+    return ("sex,exng").split(",")
 
 
 def get_numeric_column_names() -> t.List[str]:
-    return ("age,oldpeak,thalachh,chol,trtbps").split(",")
+    return ("age,oldpeak,thalachh").split(",")
 
 
 def get_column_names() -> t.List[str]:
-    return ("age,sex,cp,trtbps,chol,fbs,restecg,thalachh,exng,oldpeak,slp,caa,thall").split(",")
+    return ("age,sex,cp,restecg,thalachh,exng,oldpeak,slp,caa,thall").split(",")
 
 
 def get_categorical_variables_values_mapping() -> t.Dict[str, t.Sequence[str]]:
