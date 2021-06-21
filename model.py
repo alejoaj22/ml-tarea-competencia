@@ -170,75 +170,75 @@ class AveragePricePerNeighborhoodRegressor(BaseEstimator, RegressorMixin):
 class modelobasedeclasificacion(BaseEstimator, RegressorMixin):
     def fit(self, X, y):
         """Computes the mode of the price per neighbor on training data."""
-        df = pd.DataFrame({"age": X["age"],"sex" : X["sex"],"cp" : X["cp"],"restecg" : X["restecg"],"thalachh" : X["thalachh"],"oldpeak" : X["oldpeak"],"slp" : X["slp"],"caa" : X["caa"],"thall" : X["thall"], "y": y})
+        df = pd.DataFrame({"age": X[:,0],"sex" : X[:,1],"cp" : X[:,2],"restecg" : X[:,3],"thalachh" : X[:,4],"oldpeak" : X[:,5],"slp" : X[:,6],"caa" : X[:,7],"thall" : X[:,8], "y": y})
         self.means_ = df.groupby("y").mean().to_dict()
         self.global_mean_ = y.mean()
-
         return self
 
     def predict(self, X):
         """Predicts the mode computed in the fit method."""
-        def transform(self, X):
+        def transform(self,X):
+
             y = []
-            aux = np.abs(X["age"] - self.means_.get("age")[0])
-            aux_2 = np.abs(X["age"] - self.means_.get("age")[1])
+            aux = np.abs(X[0] - self.means_.get("age")[0])
+            aux_2 = np.abs(X[0] - self.means_.get("age")[1])
             if aux < aux_2:
                 y.append(1)
             else:
                 y.append(0)
             
-            aux = np.abs(X["sex"] - self.means_.get("sex")[0])
-            aux_2 = np.abs(X["sex"] - self.means_.get("sex")[1])
+            aux = np.abs(X[1] - self.means_.get("sex")[0])
+            aux_2 = np.abs(X[1] - self.means_.get("sex")[1])
             if aux < aux_2:
                 y.append(1)
             else:
                 y.append(0)
             
-            aux = np.abs(X["cp"] - self.means_.get("cp")[0])
-            aux_2 = np.abs(X["cp"] - self.means_.get("cp")[1])
+            aux = np.abs(X[2] - self.means_.get("cp")[0])
+            aux_2 = np.abs(X[2] - self.means_.get("cp")[1])
             if aux < aux_2:
                 y.append(1)
             else:
                 y.append(0)
 
-            aux = np.abs(X["restecg"] - self.means_.get("restecg")[0])
-            aux_2 = np.abs(X["restecg"] - self.means_.get("restecg")[1])
+            aux = np.abs(X[3] - self.means_.get("restecg")[0])
+            aux_2 = np.abs(X[3] - self.means_.get("restecg")[1])
             if aux < aux_2:
                 y.append(1)
             else:
                 y.append(0)
             
-            aux = np.abs(X["thalachh"] - self.means_.get("thalachh")[0])
-            aux_2 = np.abs(X["thalachh"] - self.means_.get("thalachh")[1])
+            aux = np.abs(X[4] - self.means_.get("thalachh")[0])
+            aux_2 = np.abs(X[4] - self.means_.get("thalachh")[1])
             if aux < aux_2:
                 y.append(1)
             else:
                 y.append(0)
 
-            aux = np.abs(X["oldpeak"] - self.means_.get("oldpeak")[0])
-            aux_2 = np.abs(X["oldpeak"] - self.means_.get("oldpeak")[1])
+            aux = np.abs(X[5] - self.means_.get("oldpeak")[0])
+            aux_2 = np.abs(X[5] - self.means_.get("oldpeak")[1])
             if aux < aux_2:
                 y.append(1)
             else:
                 y.append(0)
             
 
-            aux = np.abs(X["slp"] - self.means_.get("slp")[0])
-            aux_2 = np.abs(X["slp"] - self.means_.get("slp")[1])
+            aux = np.abs(X[6] - self.means_.get("slp")[0])
+            aux_2 = np.abs(X[6] - self.means_.get("slp")[1])
             if aux < aux_2:
                 y.append(1)
             else:
                 y.append(0)
 
-            aux = np.abs(X["caa"] - self.means_.get("caa")[0])
-            aux_2 = np.abs(X["caa"] - self.means_.get("caa")[1])
+            aux = np.abs(X[7] - self.means_.get("caa")[0])
+            aux_2 = np.abs(X[7] - self.means_.get("caa")[1])
             if aux < aux_2:
                 y.append(1)
             else:
                 y.append(0)
             
-            aux = np.abs(X["thall"] - self.means_.get("thall")[0])
-            aux_2 = np.abs(X["thall"] - self.means_.get("thall")[1])
+            aux = np.abs(X[8] - self.means_.get("thall")[0])
+            aux_2 = np.abs(X[8] - self.means_.get("thall")[1])
             if aux < aux_2:
                 y.append(1)
             else:
