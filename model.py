@@ -256,7 +256,9 @@ class modelobasedeclasificacion(BaseEstimator, RegressorMixin):
                 y_pred = 0 
             return  y_pred
 
-        y_pred = X.apply(transform)
+        y_pred = []
+        for x in X:
+            y_pred.append( transform(self,x) )
         return y_pred
 
 class AveragePricePerNeighborhoodExtractor(BaseEstimator, TransformerMixin):
